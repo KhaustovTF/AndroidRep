@@ -5,22 +5,140 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".MainActivity">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_netology"
+        android:id="@+id/posts_avatar"
+        android:layout_width="@dimen/posts_avatar_size"
+        android:layout_height="@dimen/posts_avatar_size"
+        android:contentDescription="@string/avatar_description"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/avatar_barrier"
+        tools:srcCompat="@drawable/ic_netology" />
+
 
     <TextView
+        android:id="@+id/author_name_text"
+        android:layout_marginStart="@dimen/common_spacing"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/posts_avatar"
+        app:layout_constraintTop_toTopOf="@+id/posts_avatar"
+        app:layout_constraintBottom_toTopOf="@+id/published_time_text"
+        app:layout_constraintEnd_toStartOf="@+id/more_vert_button"
+        app:layout_editor_absoluteX="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:text="Нетология. Университет инернет-профессий будущего"
+        />
+
+    <TextView
+        android:id="@+id/published_time_text"
+        android:layout_marginStart="@dimen/common_spacing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_nmedia"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/posts_avatar"
+        app:layout_constraintBottom_toBottomOf="@+id/posts_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/author_name_text"
+        app:layout_editor_absoluteX="16dp"
+        android:text="21 мая в 18:36"
+        />
+
+    <ImageButton
+        android:id="@+id/more_vert_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/baseline_more_vert_24"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/avatar_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="posts_avatar,published_time_text,more_vert_button"/>
+
+    <TextView
+        android:id="@+id/posts_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:autoLink="web"
+        android:text="Сегодня справился с очередной порцией заданий — и настроение сразу поднялось 🌟 Друзья, делитесь своими лайфхаками: как вам удается поддерживать мотивацию и эффективно учиться?
+
+#учёба #домашнеезадание #мотивация #студенты #школьники"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/avatar_barrier" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/posts_text_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="posts_content"/>
+
+    <ImageButton
+        android:id="@+id/like_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_spacing"
+        app:layout_constraintTop_toBottomOf="@+id/posts_content"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/like_button_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/like_button"
+        app:layout_constraintEnd_toStartOf="@+id/repost_button"
+        app:layout_constraintTop_toBottomOf="@+id/posts_content"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:text="50k"
+        />
+
+    <ImageButton
+        android:id="@+id/repost_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_spacing"
+        android:layout_marginTop="@dimen/common_spacing"
+        app:layout_constraintTop_toBottomOf="@+id/posts_content"
+        app:layout_constraintStart_toEndOf="@+id/like_button_count"
+        />
+
+    <TextView
+        android:id="@+id/repost_button_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/repost_button"
+        app:layout_constraintTop_toBottomOf="@+id/posts_content"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:text="5k"
+        />
+
+    <ImageView
+        android:id="@+id/views_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_spacing"
+        app:layout_constraintEnd_toStartOf="@id/views_icon_count"
+        app:layout_constraintTop_toBottomOf="@+id/posts_content"
+        tools:srcCompat="@drawable/outline_ac_unit_24" />
+
+    <TextView
+        android:id="@+id/views_icon_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:text="100k"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/posts_content" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
