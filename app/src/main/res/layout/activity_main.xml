@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:layout_marginTop="@dimen/common_spacing"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
@@ -16,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/avatar_barrier"
-        tools:srcCompat="@drawable/ic_netology" />
+        app:srcCompat="@drawable/ic_netology" />
 
 
     <TextView
@@ -88,14 +91,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/common_spacing"
+        android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/posts_content"
-        tools:srcCompat="@drawable/outline_bomb_24" />
+        app:srcCompat="@drawable/baseline_favorite_border_24" />
 
     <TextView
         android:id="@+id/like_button_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         app:layout_constraintStart_toEndOf="@+id/like_button"
         app:layout_constraintEnd_toStartOf="@+id/repost_button"
         app:layout_constraintTop_toBottomOf="@+id/posts_content"
@@ -109,9 +114,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/common_spacing"
         android:layout_marginTop="@dimen/common_spacing"
+        android:background="@android:color/transparent"
         app:layout_constraintStart_toEndOf="@+id/like_button_count"
         app:layout_constraintTop_toBottomOf="@+id/posts_content"
-        tools:srcCompat="@drawable/outline_arrow_outward_24" />
+        app:srcCompat="@drawable/outline_arrow_outward_24" />
 
     <TextView
         android:id="@+id/repost_button_count"
@@ -130,7 +136,7 @@
         android:layout_marginTop="@dimen/common_spacing"
         app:layout_constraintEnd_toStartOf="@id/views_icon_count"
         app:layout_constraintTop_toBottomOf="@+id/posts_content"
-        tools:srcCompat="@drawable/outline_ac_unit_24" />
+        app:srcCompat="@drawable/baseline_remove_red_eye_24" />
 
     <TextView
         android:id="@+id/views_icon_count"
