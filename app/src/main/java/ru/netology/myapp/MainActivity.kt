@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 }else{
                     post.likesCount--
                 }
-                likeButtonCount.text = "${post.likesCount}"
+                likeButtonCount.text = countefixer(post.likesCount)
 
 
                 likeButton.setImageResource(
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
             repostButton.setOnClickListener {
                 post.repostCount++
-                repostButtonCount.text = "${post.repostCount}"
+                repostButtonCount.text = countefixer(post.repostCount)
             }
         }
 
