@@ -2,6 +2,7 @@ package ru.netology.myapp
 
 
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,27 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         enableEdgeToEdge()
         setContentView(binding.root)
+
+
+        binding.root.setOnClickListener{
+            println("clicked!")
+        }
+
+        binding.moreVertButton.setOnClickListener {
+            println("3 dots clicked")
+        }
+
+        binding.postsAvatar.setOnClickListener {
+            println("avatar clicked")
+        }
+
+        binding.postsContent.setOnClickListener {
+            println("text clicked")
+        }
+
+        binding.likeButton.setOnClickListener {
+            println("like clicked")
+        }
 
         val post = Post(
             id = 1,
