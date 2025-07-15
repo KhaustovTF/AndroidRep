@@ -4,6 +4,7 @@ package ru.netology.myapp
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -20,23 +21,23 @@ class MainActivity : AppCompatActivity() {
 
 
         binding.root.setOnClickListener{
-            println("clicked!")
+            Toast.makeText(this, "Клик по корневой вью", Toast.LENGTH_SHORT).show()
         }
 
         binding.moreVertButton.setOnClickListener {
-            println("3 dots clicked")
+            Toast.makeText(this, "Клик по 3 точкам", Toast.LENGTH_SHORT).show()
         }
 
         binding.postsAvatar.setOnClickListener {
-            println("avatar clicked")
+            Toast.makeText(this, "Клик по аве", Toast.LENGTH_SHORT).show()
         }
 
         binding.postsContent.setOnClickListener {
-            println("text clicked")
+            Toast.makeText(this, "Клик по тексту поста", Toast.LENGTH_SHORT).show()
         }
 
         binding.likeButton.setOnClickListener {
-            println("like clicked")
+            Toast.makeText(this, "Клик по лайку", Toast.LENGTH_SHORT).show()
         }
 
         val post = Post(
