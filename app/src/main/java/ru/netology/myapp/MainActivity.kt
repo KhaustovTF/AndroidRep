@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 likeButtonCount.text = post.likesCount.toString()
                 repostButtonCount.text = post.repostCount.toString()
 
-//            like button code
+//            like button codee
 
                 likeButton.setImageResource(
                     if (post.likesByMe) {
