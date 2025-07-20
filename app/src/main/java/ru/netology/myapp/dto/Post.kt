@@ -6,7 +6,7 @@ data class Post(
     val published: String,
     val content: String,
     var likesCount: Int = 9999,
-    var likesByMe: Boolean = false,
+    val likesByMe: Boolean = false,
     var repostCount: Int = 999999,
-    var repostByMe: Boolean = false
+    val repostByMe: Boolean = false
 )
