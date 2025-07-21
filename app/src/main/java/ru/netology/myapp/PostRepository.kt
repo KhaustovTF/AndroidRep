@@ -8,6 +8,7 @@ interface PostRepository {
     fun  like()
     fun repost()
 
+    //what to do with that ssh
     fun countefixer(number: Int): String {
         return when {
             number < 1000 -> number.toString()
