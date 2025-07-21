@@ -5,7 +5,7 @@ import ru.netology.myapp.dto.Post
 
 interface PostRepository {
     fun get(): LiveData<Post>
-    fun like()
+    fun  like()
     fun repost()
 
     fun countefixer(number: Int): String {

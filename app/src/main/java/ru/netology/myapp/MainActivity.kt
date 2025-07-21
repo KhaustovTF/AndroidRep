@@ -19,27 +19,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-//        binding.root.setOnClickListener{
-//            Toast.makeText(this, "Клик по корневой вью", Toast.LENGTH_SHORT).show()
-//        }
-//
-//        binding.moreVertButton.setOnClickListener {
-//            Toast.makeText(this, "Клик по 3 точкам", Toast.LENGTH_SHORT).show()
-//        }
-//
-//        binding.postsAvatar.setOnClickListener {
-//            Toast.makeText(this, "Клик по аве", Toast.LENGTH_SHORT).show()
-//        }
-//
-//        binding.postsContent.setOnClickListener {
-//            Toast.makeText(this, "Клик по тексту поста", Toast.LENGTH_SHORT).show()
-//        }
-//
-//        binding.likeButton.setOnClickListener {
-//            Toast.makeText(this, "Клик по лайку", Toast.LENGTH_SHORT).show()
-//        }
-
-
         viewModel.data.observe(this) { post ->
 
             with(binding) {
@@ -63,7 +42,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             binding.likeButton.setOnClickListener {
-                viewModel.like()
+                    viewModel.like()
+
+
 //                if (post.likesByMe){
 //                    post.likesCount++
 //                }else{
