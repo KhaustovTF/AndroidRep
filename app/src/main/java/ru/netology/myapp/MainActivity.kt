@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity() {
                 authorNameText.text = post.author
                 postsContent.text = post.content
                 publishedTimeText.text = post.published
-                likeButtonCount.text = post.likesCount.toString()
-                repostButtonCount.text = post.repostCount.toString()
+                likeButtonCount.text = SingleCountFix.counteFixer(post.likesCount)
+                repostButtonCount.text = SingleCountFix.counteFixer(post.repostCount)
 
 //            like button code
 
@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             binding.likeButton.setOnClickListener {
-                    viewModel.like()
+                viewModel.like()
 
 
 //                if (post.likesByMe){
