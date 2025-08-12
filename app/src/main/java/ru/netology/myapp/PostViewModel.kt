@@ -13,4 +13,5 @@ class PostViewModel: ViewModel() {
     fun like() = repository.like()
 
     fun repost() = repository.repost()
+
 }
