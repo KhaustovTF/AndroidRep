@@ -2,20 +2,19 @@ package ru.netology.myapp.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ListView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.myapp.R
 import ru.netology.myapp.SingleCountFix
-import ru.netology.myapp.databinding.ActivityMainBinding
 import ru.netology.myapp.databinding.CardPostBinding
 import ru.netology.myapp.dto.Post
 
 typealias onLikeListener = (post: Post) -> Unit
+typealias onRepostListener = (post: Post) -> Unit
 
 
-class PostAdapter(private val onLikeListener: onLikeListener) :
+class PostAdapter(private val onLikeListener: onLikeListener, private val onRepostListener: onRepostListener) :
     ListAdapter<Post, PostViewHolder>(PostDiffCallBack) {
 
 
@@ -24,7 +23,7 @@ class PostAdapter(private val onLikeListener: onLikeListener) :
         viewType: Int
     ): PostViewHolder {
         val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding, onLikeListener)
+        return PostViewHolder(binding, onLikeListener,onRepostListener)
     }
 
     override fun onBindViewHolder(
@@ -40,7 +39,8 @@ class PostAdapter(private val onLikeListener: onLikeListener) :
 
 class PostViewHolder(
     private val binding: CardPostBinding,
-    private val onLikeListener: onLikeListener
+    private val onLikeListener: onLikeListener,
+    private val onRepostListener: onRepostListener
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(post: Post) = with(binding) {
         authorNameText.text = post.author
@@ -66,7 +66,7 @@ class PostViewHolder(
 
         repostButton.setOnClickListener {
 //                post.repostCount++
-            onLikeListener(post)
+            onRepostListener(post)
 //                repostButtonCount.text = countefixer(post.repostCount)
         }
     }

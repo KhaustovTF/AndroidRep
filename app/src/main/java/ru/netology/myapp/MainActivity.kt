@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import ru.netology.myapp.adapter.PostAdapter
 import ru.netology.myapp.databinding.ActivityMainBinding
 import ru.netology.myapp.databinding.CardPostBinding
+import ru.netology.myapp.dto.Post
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,10 +22,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        val adapter = PostAdapter { post ->
-            viewModel.like(post.id)
-            viewModel.repost(post.id)
-        }
+        val adapter = PostAdapter(
+            onLikeListener = { post ->
+                viewModel.like(post.id)
+            },
+            onRepostListener = { post ->
+                viewModel.repost(post.id)
+            }
+        )
 
         binding.list.adapter = adapter
 
@@ -34,6 +39,8 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
+
 
 
 }
