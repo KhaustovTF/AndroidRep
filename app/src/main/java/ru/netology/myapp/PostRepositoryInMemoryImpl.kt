@@ -25,6 +25,42 @@ class PostRepositoryInMemoryImpl : PostRepository {
             author = "DOTA 2 FOREVER + MALCHISHNIK v ETU SATURDAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
             published = "16 avgusta в 19:00 - 20:00",
             content = "BUHAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEM"
+        ),
+        Post(
+            id = 4,
+            author = "Нетология. Университет инернет-профессий будущего",
+            published = "21 мая в 18:36",
+            content = "Сегодня справился с очередной порцией заданий — и настроение сразу поднялось. Друзья, делитесь своими лайфхаками: как вам удается поддерживать мотивацию и эффективно учиться? #учёба #домашнеезадание #мотивация #студенты #школьники"
+        ),
+        Post(
+            id = 5,
+            author = "Нетология. Университет инернет-профессий прошлого",
+            published = "22 мая в 19:37",
+            content = "тут могла быть ваша реклама"
+        ),
+        Post(
+            id = 6,
+            author = "DOTA 2 FOREVER + MALCHISHNIK v ETU SATURDAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+            published = "16 avgusta в 19:00 - 20:00",
+            content = "BUHAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEM"
+        ),
+        Post(
+            id = 1,
+            author = "Нетология. Университет инернет-профессий будущего",
+            published = "21 мая в 18:36",
+            content = "Сегодня справился с очередной порцией заданий — и настроение сразу поднялось. Друзья, делитесь своими лайфхаками: как вам удается поддерживать мотивацию и эффективно учиться? #учёба #домашнеезадание #мотивация #студенты #школьники"
+        ),
+        Post(
+            id = 2,
+            author = "Нетология. Университет инернет-профессий прошлого",
+            published = "22 мая в 19:37",
+            content = "тут могла быть ваша реклама"
+        ),
+        Post(
+            id = 3,
+            author = "DOTA 2 FOREVER + MALCHISHNIK v ETU SATURDAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
+            published = "16 avgusta в 19:00 - 20:00",
+            content = "BUHAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEM"
         )
     )
 
