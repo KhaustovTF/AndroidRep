@@ -6,63 +6,90 @@ import ru.netology.myapp.dto.Post
 
 class PostRepositoryInMemoryImpl : PostRepository {
 
-
+    private var index: Long = 1L
     private var posts = listOf(
         Post(
-            id = 1,
+            id = index++,
             author = "Нетология. Университет инернет-профессий будущего",
             published = "21 мая в 18:36",
             content = "Сегодня справился с очередной порцией заданий — и настроение сразу поднялось. Друзья, делитесь своими лайфхаками: как вам удается поддерживать мотивацию и эффективно учиться? #учёба #домашнеезадание #мотивация #студенты #школьники"
         ),
         Post(
-            id = 2,
+            id = index++,
             author = "Нетология. Университет инернет-профессий прошлого",
             published = "22 мая в 19:37",
             content = "тут могла быть ваша реклама"
         ),
         Post(
-            id = 3,
+            id = index++,
             author = "DOTA 2 FOREVER + MALCHISHNIK v ETU SATURDAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
             published = "16 avgusta в 19:00 - 20:00",
             content = "BUHAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEM"
         ),
         Post(
-            id = 4,
+            id = index++,
             author = "Нетология. Университет инернет-профессий будущего",
             published = "21 мая в 18:36",
             content = "Сегодня справился с очередной порцией заданий — и настроение сразу поднялось. Друзья, делитесь своими лайфхаками: как вам удается поддерживать мотивацию и эффективно учиться? #учёба #домашнеезадание #мотивация #студенты #школьники"
         ),
         Post(
-            id = 5,
+            id = index++,
             author = "Нетология. Университет инернет-профессий прошлого",
             published = "22 мая в 19:37",
             content = "тут могла быть ваша реклама"
         ),
         Post(
-            id = 6,
+            id = index++,
             author = "DOTA 2 FOREVER + MALCHISHNIK v ETU SATURDAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
             published = "16 avgusta в 19:00 - 20:00",
             content = "BUHAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEM"
         ),
         Post(
-            id = 1,
+            id = index++,
             author = "Нетология. Университет инернет-профессий будущего",
             published = "21 мая в 18:36",
             content = "Сегодня справился с очередной порцией заданий — и настроение сразу поднялось. Друзья, делитесь своими лайфхаками: как вам удается поддерживать мотивацию и эффективно учиться? #учёба #домашнеезадание #мотивация #студенты #школьники"
         ),
         Post(
-            id = 2,
+            id = index++,
             author = "Нетология. Университет инернет-профессий прошлого",
             published = "22 мая в 19:37",
             content = "тут могла быть ваша реклама"
         ),
         Post(
-            id = 3,
+            id = index++,
             author = "DOTA 2 FOREVER + MALCHISHNIK v ETU SATURDAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!",
             published = "16 avgusta в 19:00 - 20:00",
             content = "BUHAEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEM"
         )
     )
+
+    override fun removeById(id: Long) {
+        posts = posts.filter { it.id != id }
+        data.value = posts
+    }
+
+    override fun save(post: Post) {
+        posts = if (post.id == 0L) {
+            listOf(
+                post.copy(
+                    id = index++,
+                    author = "Me",
+                    published = "now"
+                )
+            ) + posts
+        } else {
+            posts.map {
+                if (post.id == it.id) {
+                    it.copy(content = post.content)
+                } else it
+
+            }
+        }
+
+
+        data.value = posts
+    }
 
     private val data = MutableLiveData(posts)
 
