@@ -6,4 +6,5 @@
     <string name="menu_edit">Изменить</string>
     <string name="post_text">Текст поста</string>
     <string name="edit_text">Изменить текст</string>
+    <string name="edit_text_not_main">Сообщение</string>
 </resources>

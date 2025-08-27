@@ -25,7 +25,7 @@ class PostViewModel: ViewModel() {
 
     fun removeById (id: Long) = repository.removeById(id)
 
-    fun changeContet(content: String){
+    fun changeContent(content: String){
         val text = content.trim()
         edited.value?.let {
             if (text == it.content){
@@ -41,6 +41,10 @@ class PostViewModel: ViewModel() {
             repository.save(it)
         }
         edited.value = empty
+    }
+
+    fun editCancel(){
+        edited.value
     }
 
     fun edit(post: Post){

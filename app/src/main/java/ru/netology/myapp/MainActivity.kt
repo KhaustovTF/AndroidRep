@@ -2,13 +2,13 @@ package ru.netology.myapp
 
 
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import ru.netology.myapp.adapter.OnInteractorListener
 import ru.netology.myapp.adapter.PostAdapter
-import ru.netology.myapp.adapter.onRemoveListener
 import ru.netology.myapp.databinding.ActivityMainBinding
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.util.AndroidUtils
@@ -62,13 +62,14 @@ class MainActivity : AppCompatActivity() {
                 with(binding.content) {
                     requestFocus()
                     setText(post.content)
+                    binding.editGroup.visibility = View.VISIBLE
                 }
             }
         }
 
 
         with(binding) {
-            binding.save.setOnClickListener {
+            save.setOnClickListener {
                 if (content.text.isNullOrBlank()) {
                     Toast.makeText(
                         this@MainActivity,
@@ -78,12 +79,24 @@ class MainActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                viewModel.changeContet(content.text.toString())
+                viewModel.changeContent(content.text.toString())
                 viewModel.save()
                 content.setText("")
                 content.clearFocus()
+                editGroup.visibility = View.GONE
+                AndroidUtils.hideKeyboard(it)
+
+            }
+
+            cancelEdit.setOnClickListener {
+
+                viewModel.editCancel()
+                viewModel.save()
+                content.setText("")
+                editGroup.visibility = View.GONE
                 AndroidUtils.hideKeyboard(it)
             }
+
         }
 
 

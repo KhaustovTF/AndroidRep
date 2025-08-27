@@ -91,6 +91,12 @@ class PostRepositoryInMemoryImpl : PostRepository {
         data.value = posts
     }
 
+    override fun editCancel(post: Post) {
+        posts.map {
+            it.copy(content = post.content)
+        }
+    }
+
     private val data = MutableLiveData(posts)
 
     override fun get(): LiveData<List<Post>> = data
