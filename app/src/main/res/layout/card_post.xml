@@ -50,14 +50,15 @@
         android:text="21 мая в 18:36"
         />
 
-    <ImageButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/more_vert_button"
+        style="@style/Widget.Material3.Button.IconButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/baseline_more_vert_24"/>
+        app:icon="@drawable/baseline_more_vert_24"/>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/avatar_barrier"
@@ -86,48 +87,35 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="posts_content"/>
 
-    <ImageButton
-        android:id="@+id/like_button"
-        android:layout_width="19dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="@dimen/common_spacing"
-        android:background="@android:color/transparent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/posts_content"
-        app:srcCompat="@drawable/baseline_favorite_border_24" />
 
-    <TextView
-        android:id="@+id/like_button_count"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/like_button"
+        style="@style/Style.LikeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        app:layout_constraintStart_toEndOf="@+id/like_button"
-        app:layout_constraintEnd_toStartOf="@+id/repost_button"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:checkable="true"
+        android:contentDescription="@string/like"
+        android:text="1"
+        app:icon="@drawable/ic_like"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/posts_content"
-        android:layout_marginTop="@dimen/common_spacing"
-        android:text="50k"
-        />
+        app:srcCompat="@drawable/ic_unliked_24" />
 
-    <ImageButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/repost_button"
+        style="@style/Style.LikeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/common_spacing"
-        android:layout_marginTop="@dimen/common_spacing"
+        android:layout_marginTop="@dimen/top_spacing"
+        android:text="1"
         android:background="@android:color/transparent"
-        app:layout_constraintStart_toEndOf="@+id/like_button_count"
+        app:layout_constraintStart_toEndOf="@+id/like_button"
         app:layout_constraintTop_toBottomOf="@+id/posts_content"
-        app:srcCompat="@drawable/outline_arrow_outward_24" />
+        app:icon="@drawable/outline_arrow_outward_24" />
 
-    <TextView
-        android:id="@+id/repost_button_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/repost_button"
-        app:layout_constraintTop_toBottomOf="@+id/posts_content"
-        android:layout_marginTop="@dimen/common_spacing"
-        android:text="5k"
-        />
 
     <ImageView
         android:id="@+id/views_icon"

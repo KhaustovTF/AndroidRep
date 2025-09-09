@@ -55,20 +55,19 @@ class PostViewHolder(
         authorNameText.text = post.author
         postsContent.text = post.content
         publishedTimeText.text = post.published
-        likeButtonCount.text = SingleCountFix.counteFixer(post.likesCount)
-        repostButtonCount.text = SingleCountFix.counteFixer(post.repostCount)
 
 //            like button codee
+        likeButton.apply {
+            isChecked = post.likesByMe
+            text = post.likesCount.toString()
+            text = SingleCountFix.counteFixer(post.likesCount)
+        }
+        repostButton.apply {
+            text = post.repostCount.toString()
+            text = SingleCountFix.counteFixer(post.repostCount)
+        }
 
-        likeButton.setImageResource(
-            if (post.likesByMe) {
-                R.drawable.baseline_favorite_24
 
-            } else {
-                R.drawable.baseline_favorite_border_24
-
-            }
-        )
         likeButton.setOnClickListener {
             onInteractorListener.onLike(post)
         }
