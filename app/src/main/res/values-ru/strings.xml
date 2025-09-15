@@ -8,4 +8,5 @@
     <string name="edit_text">Изменить текст</string>
     <string name="edit_text_not_main">Сообщение</string>
     <string name="like">Like</string>
+    <string name="error_empty_content">Контент не может быть пустым</string>
 </resources>

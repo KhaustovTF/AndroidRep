@@ -8,6 +8,7 @@
     <string name="edit_text">Edit message</string>
     <string name="edit_text_not_main">Text</string>
     <string name="like">Like</string>
+    <string name="error_empty_content">Content is can\'t be empty</string>
 
 
 </resources>
