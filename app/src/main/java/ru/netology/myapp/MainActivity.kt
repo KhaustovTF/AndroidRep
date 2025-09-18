@@ -27,6 +27,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val viewModel: PostViewModel by viewModels()
+
+
+        val newPostLauncher = registerForActivityResult(NewPostResultContract()) { content ->
+            content ?: return@registerForActivityResult
+            viewModel.changeContent(content)
+            viewModel.save()
+        }
+
+        val editPostLauncher = registerForActivityResult(EditPostResultContract()) { content ->
+            content ?: return@registerForActivityResult
+            viewModel.changeContent(content)
+            viewModel.save()
+        }
+
         val adapter = PostAdapter(object : OnInteractorListener {
             override fun onLike(post: Post) {
                 viewModel.like(post.id)
@@ -49,6 +63,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
+                editPostLauncher.launch(post.content)
             }
 
         }
@@ -65,15 +80,18 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val newPostLauncher = registerForActivityResult(NewPostResultContract()) { content ->
-            content ?: return@registerForActivityResult
-            viewModel.changeContent(content)
-            viewModel.save()
-        }
+
 
         binding.fab.setOnClickListener {
             newPostLauncher.launch(Unit)
         }
+
+
+
+
+
+
+
 
 //        viewModel.edited.observe(this) { post ->
 //            if (post.id != 0L) {

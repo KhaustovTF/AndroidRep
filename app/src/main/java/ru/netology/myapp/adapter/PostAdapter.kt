@@ -88,7 +88,7 @@ class PostViewHolder(
                             true
                         }
 
-                        R.id.edit -> {
+                        R.id.edit_post -> {
                             onInteractorListener.onEdit(post)
                             true
                         }

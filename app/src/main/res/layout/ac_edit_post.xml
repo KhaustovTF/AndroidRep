@@ -8,11 +8,24 @@
     tools:context=".NewPostActivity">
 
     <EditText
-        android:id="@+id/edit"
+        android:id="@+id/edit_post_string"
         android:gravity="start|top"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/transparent"/>
+        android:layout_margin="16dp"
+        android:hint="Отредактируй пост..."
+        android:background="@android:color/transparent"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cancel_changes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        app:fabSize="mini"
+        android:layout_margin="16dp"
+        app:srcCompat="@drawable/baseline_content_cut_24" />
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
@@ -23,11 +36,13 @@
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/save"
+        android:id="@+id/commit_changes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/baseline_add_24"
+        app:srcCompat="@drawable/baseline_check_24"
         app:layout_anchor="@id/bottomAppBar"
         app:fabCradleRoundedCornerRadius="8dp"
         />
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

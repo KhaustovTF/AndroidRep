@@ -1,12 +1,10 @@
-package ru.netology.myapp
+package ru.netology.myapp.Activity
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.snackbar.Snackbar
+import ru.netology.myapp.R
 import ru.netology.myapp.databinding.AcIntentHandlerBinding
 
 class intentHandlerActivity : AppCompatActivity() {
