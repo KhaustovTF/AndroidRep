@@ -25,6 +25,7 @@ interface OnInteractorListener {
     fun onRepost(post: Post)
     fun onRemove(post: Post)
     fun onEdit(post: Post)
+    fun onPlayVideo(post: Post)
 }
 
 class PostAdapter(
@@ -111,14 +112,11 @@ class PostViewHolder(
             videoPlace.visibility = View.VISIBLE
 
             val clickListener = View.OnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW, post.video.toUri())
-                val context = binding.root.context
-                context.startActivity(intent)
+                onInteractorListener.onPlayVideo(post)
             }
 
             videoPlace.setOnClickListener(clickListener)
             playButton.setOnClickListener(clickListener)
-
         }
     }
 

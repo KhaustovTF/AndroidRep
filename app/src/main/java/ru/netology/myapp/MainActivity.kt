@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import ru.netology.myapp.adapter.OnInteractorListener
 import ru.netology.myapp.adapter.PostAdapter
 import ru.netology.myapp.databinding.ActivityMainBinding
@@ -36,7 +37,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         val editPostLauncher = registerForActivityResult(EditPostResultContract()) { content ->
-            content ?: return@registerForActivityResult
+            if (content == null) {
+                viewModel.editCancel()
+                return@registerForActivityResult
+            }
             viewModel.changeContent(content)
             viewModel.save()
         }
@@ -64,6 +68,13 @@ class MainActivity : AppCompatActivity() {
             override fun onEdit(post: Post) {
                 viewModel.edit(post)
                 editPostLauncher.launch(post.content)
+            }
+
+            override fun onPlayVideo(post: Post) {
+                post.video?.let { url ->
+                    val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+                    startActivity(intent)
+                }
             }
 
         }
