@@ -10,6 +10,13 @@ class PostRepositoryInMemoryImpl : PostRepository {
     private var posts = listOf(
         Post(
             id = index++,
+            author = "Видосик тест",
+            published = "завтра",
+            content = "ya love ти",
+            video = "https://youtu.be/hZbQUEbJF5M?list=LL"
+        ),
+        Post(
+            id = index++,
             author = "Нетология. Университет инернет-профессий будущего",
             published = "21 мая в 18:36",
             content = "Сегодня справился с очередной порцией заданий — и настроение сразу поднялось. Друзья, делитесь своими лайфхаками: как вам удается поддерживать мотивацию и эффективно учиться? #учёба #домашнеезадание #мотивация #студенты #школьники"

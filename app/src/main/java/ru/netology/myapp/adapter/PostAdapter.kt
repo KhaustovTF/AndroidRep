@@ -1,6 +1,9 @@
 package ru.netology.myapp.adapter
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
@@ -10,6 +13,8 @@ import ru.netology.myapp.R
 import ru.netology.myapp.SingleCountFix
 import ru.netology.myapp.databinding.CardPostBinding
 import ru.netology.myapp.dto.Post
+import androidx.core.net.toUri
+import ru.netology.myapp.adapter.PostViewHolder.PostDiffCallBack
 
 typealias onLikeListener = (post: Post) -> Unit
 typealias onRepostListener = (post: Post) -> Unit
@@ -100,16 +105,31 @@ class PostViewHolder(
 
             }.show()
         }
-    }
-}
+        if (post.video.isNullOrBlank()) {
+            videoPlace.visibility = View.GONE
+        } else {
+            videoPlace.visibility = View.VISIBLE
 
-object PostDiffCallBack : DiffUtil.ItemCallback<Post>() {
-    override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
-        return oldItem.id == newItem.id
+            val clickListener = View.OnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW, post.video.toUri())
+                val context = binding.root.context
+                context.startActivity(intent)
+            }
+
+            videoPlace.setOnClickListener(clickListener)
+            playButton.setOnClickListener(clickListener)
+
+        }
     }
 
-    override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
-        return oldItem == newItem
+    object PostDiffCallBack : DiffUtil.ItemCallback<Post>() {
+        override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
+            return oldItem == newItem
+        }
     }
 }
 

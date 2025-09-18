@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_marginTop="@dimen/common_spacing"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp"
+    android:layout_marginTop="@dimen/common_spacing"
     tools:context=".MainActivity">
+
 
     <ImageView
         android:id="@+id/posts_avatar"
@@ -24,31 +24,29 @@
 
     <TextView
         android:id="@+id/author_name_text"
-        android:layout_marginStart="@dimen/common_spacing"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@+id/posts_avatar"
-        app:layout_constraintTop_toTopOf="@+id/posts_avatar"
-        app:layout_constraintBottom_toTopOf="@+id/published_time_text"
-        app:layout_constraintEnd_toStartOf="@+id/more_vert_button"
-        app:layout_editor_absoluteX="16dp"
         android:ellipsize="end"
         android:maxLines="1"
-        app:layout_constraintVertical_chainStyle="packed"
-        android:text="Нетология. Университет инернет-профессий будущего"
-        />
+        android:text="Нетология. Университет интернет-профессий будущего"
+        android:layout_marginStart="@dimen/common_spacing"
+        app:layout_constraintStart_toEndOf="@id/posts_avatar"
+        app:layout_constraintTop_toTopOf="@id/posts_avatar"
+        app:layout_constraintEnd_toStartOf="@id/more_vert_button"
+        app:layout_constraintBottom_toTopOf="@id/published_time_text"
+        app:layout_constraintVertical_chainStyle="packed"/>
+
 
     <TextView
         android:id="@+id/published_time_text"
-        android:layout_marginStart="@dimen/common_spacing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/posts_avatar"
-        app:layout_constraintBottom_toBottomOf="@+id/posts_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/author_name_text"
-        app:layout_editor_absoluteX="16dp"
         android:text="21 мая в 18:36"
-        />
+        android:layout_marginStart="@dimen/common_spacing"
+        app:layout_constraintStart_toEndOf="@id/posts_avatar"
+        app:layout_constraintTop_toBottomOf="@id/author_name_text"
+        app:layout_constraintBottom_toBottomOf="@id/posts_avatar"/>
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/more_vert_button"
@@ -56,9 +54,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
+        app:icon="@drawable/baseline_more_vert_24"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:icon="@drawable/baseline_more_vert_24"/>
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/avatar_barrier"
@@ -67,25 +66,44 @@
         app:barrierDirection="bottom"
         app:constraint_referenced_ids="posts_avatar,published_time_text,more_vert_button"/>
 
+
     <TextView
         android:id="@+id/posts_content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/common_spacing"
         android:autoLink="web"
-        android:text="Сегодня справился с очередной порцией заданий — и настроение сразу поднялось 🌟 Друзья, делитесь своими лайфхаками: как вам удается поддерживать мотивацию и эффективно учиться?
-
-#учёба #домашнеезадание #мотивация #студенты #школьники"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Сегодня справился с очередной порцией заданий..."
+        app:layout_constraintTop_toBottomOf="@id/avatar_barrier"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/avatar_barrier" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/posts_text_barrier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="posts_content"/>
+
+    <FrameLayout
+        android:id="@+id/video_place"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="@dimen/common_spacing"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/posts_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/video_picture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_foreground"/>
+
+        <ImageButton
+            android:id="@+id/play_button"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:src="@drawable/baseline_play_arrow_24"/>
+    </FrameLayout>
 
 
     <com.google.android.material.button.MaterialButton
@@ -99,9 +117,9 @@
         android:contentDescription="@string/like"
         android:text="1"
         app:icon="@drawable/ic_like"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/posts_content"
-        app:srcCompat="@drawable/ic_unliked_24" />
+        app:layout_constraintTop_toBottomOf="@id/video_place"
+        app:layout_constraintStart_toStartOf="parent"/>
+
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/repost_button"
@@ -110,12 +128,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/common_spacing"
         android:layout_marginTop="@dimen/top_spacing"
-        android:text="2"
         android:background="@android:color/transparent"
-        app:layout_constraintStart_toEndOf="@+id/like_button"
-        app:layout_constraintTop_toBottomOf="@+id/posts_content"
+        android:text="2"
+        android:textColor="@color/grey"
         app:icon="@drawable/outline_arrow_outward_24"
-        android:textColor="@color/grey"/>
+        app:layout_constraintTop_toBottomOf="@id/video_place"
+        app:layout_constraintStart_toEndOf="@id/like_button"/>
 
 
     <ImageView
@@ -123,9 +141,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/common_spacing"
+        app:layout_constraintTop_toBottomOf="@id/video_place"
         app:layout_constraintEnd_toStartOf="@id/views_icon_count"
-        app:layout_constraintTop_toBottomOf="@+id/posts_content"
-        app:srcCompat="@drawable/baseline_remove_red_eye_24" />
+        app:srcCompat="@drawable/baseline_remove_red_eye_24"/>
+
 
     <TextView
         android:id="@+id/views_icon_count"
@@ -133,8 +152,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/common_spacing"
         android:text="100k"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/posts_content" />
-
+        app:layout_constraintTop_toBottomOf="@id/video_place"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
