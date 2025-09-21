@@ -1,4 +1,4 @@
-package ru.netology.myapp
+package ru.netology.myapp.repository
 
 import androidx.lifecycle.LiveData
 import ru.netology.myapp.dto.Post

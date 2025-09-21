@@ -5,16 +5,14 @@ plugins {
 
 android {
     namespace 'ru.netology.myapp'
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId "ru.netology.myapp"
         minSdk 24
-        targetSdk 35
+        targetSdk 36
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildFeatures.viewBinding = true
@@ -48,6 +46,8 @@ dependencies {
     implementation libs.androidx.lifecycle.viewmodel.ktx
     implementation libs.androidx.lifecycle.livedata.ktx
     implementation libs.androidx.recyclerview
+//    implementation (libs.gson.gson.version)
+    implementation(libs.gson)
 
 
 }
