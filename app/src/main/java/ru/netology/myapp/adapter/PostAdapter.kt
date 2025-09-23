@@ -26,6 +26,7 @@ interface OnInteractorListener {
     fun onRemove(post: Post)
     fun onEdit(post: Post)
     fun onPlayVideo(post: Post)
+    fun onOpen(post: Post)
 }
 
 class PostAdapter(
@@ -106,6 +107,11 @@ class PostViewHolder(
 
             }.show()
         }
+
+        binding.root.setOnClickListener {
+            onInteractorListener.onOpen(post)
+        }
+
         if (post.video.isNullOrBlank()) {
             videoPlace.visibility = View.GONE
         } else {
@@ -118,6 +124,12 @@ class PostViewHolder(
             videoPlace.setOnClickListener(clickListener)
             playButton.setOnClickListener(clickListener)
         }
+        binding.root.setOnClickListener {
+            onInteractorListener.onOpen(post)
+        }
+        binding.root.isClickable = true
+        binding.root.isFocusable = true
+
     }
 
     object PostDiffCallBack : DiffUtil.ItemCallback<Post>() {

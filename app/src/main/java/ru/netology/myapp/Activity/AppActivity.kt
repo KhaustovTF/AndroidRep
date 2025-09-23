@@ -3,14 +3,16 @@ package ru.netology.myapp.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
+import ru.netology.myapp.FeedFragment.Companion.textArgs
 import ru.netology.myapp.R
-import ru.netology.myapp.databinding.AcIntentHandlerBinding
+import ru.netology.myapp.databinding.ActivityAppBinding
 
-class intentHandlerActivity : AppCompatActivity() {
+class AppActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = AcIntentHandlerBinding.inflate(layoutInflater)
+        val binding = ActivityAppBinding .inflate(layoutInflater)
         setContentView(binding.root)
 
         intent?.let {
@@ -28,7 +30,10 @@ class intentHandlerActivity : AppCompatActivity() {
                 return@let
             }
 
-            //TODO: handle text
+            findNavController(R.id.nav_host_fragment).navigate(R.id.action_feedFragment2_to_newPostFragment,
+                Bundle().apply {
+                    textArgs = text
+                })
         }
     }
 }

@@ -16,10 +16,7 @@
             android:name=".EditPostActivity"
             android:exported="false" />
         <activity
-            android:name=".NewPostActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activity.intentHandlerActivity"
+            android:name=".Activity.AppActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -28,10 +25,6 @@
 
                 <data android:mimeType="text/plain" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

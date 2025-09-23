@@ -43,10 +43,8 @@ class PostViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-    fun save(){
-        edited.value.let {
-            repository.save(it)
-        }
+    fun save() {
+        edited.value?.let { repository.save(it) }
         edited.value = empty
     }
 

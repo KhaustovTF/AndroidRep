@@ -8,7 +8,9 @@
     android:layout_height="wrap_content"
     android:padding="16dp"
     android:layout_marginTop="@dimen/common_spacing"
-    tools:context=".MainActivity">
+    tools:context=".FeedFragment"
+    android:foreground="?attr/selectableItemBackground">
+
 
 
     <ImageView
