@@ -135,7 +135,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
         posts = posts.map { post ->
             if (post.id == id) {
                 post.copy(
-                    repostByMe = !post.repostByMe, repostCount = post.repostCount + 1
+                     repostCount = post.repostCount + 1
                 )
             } else {
                 post

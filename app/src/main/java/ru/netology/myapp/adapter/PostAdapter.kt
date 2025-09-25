@@ -26,7 +26,7 @@ interface OnInteractorListener {
     fun onRemove(post: Post)
     fun onEdit(post: Post)
     fun onPlayVideo(post: Post)
-    fun onOpen(post: Post)
+    fun onOpen(post: Post) {}
 }
 
 class PostAdapter(

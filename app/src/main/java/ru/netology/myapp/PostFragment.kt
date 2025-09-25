@@ -9,17 +9,15 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import ru.netology.myapp.FeedFragment.Companion.textArgs
 import ru.netology.myapp.adapter.OnInteractorListener
-import ru.netology.myapp.adapter.PostAdapter
+import ru.netology.myapp.adapter.PostViewHolder
 import ru.netology.myapp.databinding.FragmentSinglePostBinding
 import ru.netology.myapp.dto.Post
 
 class PostFragment : Fragment() {
 
     private val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
-
     private val postId: Long by lazy { requireArguments().getLong("postId") }
 
     override fun onCreateView(
@@ -29,7 +27,8 @@ class PostFragment : Fragment() {
     ): View {
         val binding = FragmentSinglePostBinding.inflate(inflater, container, false)
 
-        val adapter = PostAdapter(object : OnInteractorListener {
+        val holder = PostViewHolder(binding.singlePost, object : OnInteractorListener {
+
             override fun onLike(post: Post) {
                 viewModel.like(post.id)
             }
@@ -46,7 +45,7 @@ class PostFragment : Fragment() {
 
             override fun onRemove(post: Post) {
                 viewModel.removeById(post.id)
-                requireActivity().onBackPressedDispatcher.onBackPressed()
+                findNavController().navigateUp()
             }
 
             override fun onEdit(post: Post) {
@@ -63,17 +62,12 @@ class PostFragment : Fragment() {
                 }
             }
 
-            override fun onOpen(post: Post) {
-
-            }
+            // onOpen не нужен — оставляем дефолтный пустой
         })
 
-        binding.list.layoutManager = LinearLayoutManager(requireContext())
-        binding.list.adapter = adapter
-
         viewModel.data.observe(viewLifecycleOwner) { posts ->
-            val post = posts.find { it.id == postId }
-            post?.let { adapter.submitList(listOf(it)) }
+            val post = posts.find { it.id == postId } ?: return@observe
+            holder.bind(post)
         }
 
         return binding.root
