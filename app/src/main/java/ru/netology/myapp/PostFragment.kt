@@ -65,8 +65,8 @@ class PostFragment : Fragment() {
             // onOpen не нужен — оставляем дефолтный пустой
         })
 
-        viewModel.data.observe(viewLifecycleOwner) { posts ->
-            val post = posts.find { it.id == postId } ?: return@observe
+        viewModel.data.observe(viewLifecycleOwner) { state ->
+            val post = state.post.find { it.id == postId } ?: return@observe
             holder.bind(post)
         }
 

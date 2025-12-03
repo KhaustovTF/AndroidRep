@@ -1,6 +1,5 @@
 package ru.netology.myapp
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import ru.netology.myapp.FeedFragment.Companion.textArgs
 import ru.netology.myapp.databinding.FragmentNewPostBinding
+import ru.netology.myapp.util.AndroidUtils
 import kotlin.getValue
 
 class NewPostFragment : Fragment() {
@@ -33,14 +33,15 @@ class NewPostFragment : Fragment() {
 
 
         binding.save.setOnClickListener {
-            val intent = Intent()
-            if (binding.edit.text.isNotBlank()) {
-                val content = binding.edit.text.toString()
-                viewModel.changeContent(content)
-                viewModel.save()
-            }
-            findNavController().navigateUp()
+            viewModel.save(binding.edit.text.toString())
+            AndroidUtils.hideKeyboard(requireView())
+
         }
+        viewModel.postCreated.observe(viewLifecycleOwner){
+            findNavController().navigateUp()
+            viewModel.load()
+        }
+
         return binding.root
     }
 }

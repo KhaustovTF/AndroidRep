@@ -30,4 +30,55 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="@dimen/common_spacing"/>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    
+    <TextView
+        android:id="@+id/empty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/no_postos"
+        />
+
+    <TextView
+        android:id="@+id/errorTitle"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/retry"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/something_went_wrong"
+        />
+
+    <Button
+        android:id="@+id/retry"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/errorTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retry"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/errorGroup"
+        android:visibility="gone"
+        app:constraint_referenced_ids="errorTitle, retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
