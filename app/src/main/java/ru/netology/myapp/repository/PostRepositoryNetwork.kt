@@ -37,7 +37,36 @@ class PostRepositoryNetwork() : PostRepository {
     }
 
     override fun like(id: Long) {
-        TODO("Not yet implemented")
+        val posts = get()
+        val post = posts.find { it.id == id } ?: return
+
+        val liked = post.likesByMe
+
+        val url = "${BASE_URL}api/posts/$id/likes"
+
+        val builder = Request.Builder()
+            .url(url)
+
+        val request = if (!liked) {
+            builder
+                .post("".toRequestBody(jsonType))
+                .build()
+        }else{
+            builder
+                .delete()
+                .build()
+        }
+
+        val call = client.newCall(request)
+
+        val response = call.execute()
+        if (!response.isSuccessful) {
+            response.close()
+            throw RuntimeException("Oshibka")
+        }
+
+        val textBody = response.body.string()
+        response.close()
     }
 
     override fun repost(id: Long) {
