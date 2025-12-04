@@ -9,4 +9,7 @@
     <string name="edit_text_not_main">Сообщение</string>
     <string name="like">Like</string>
     <string name="error_empty_content">Контент не может быть пустым</string>
+    <string name="no_postos">Нет постов</string>
+    <string name="something_went_wrong">Что то пошло не по плану</string>
+    <string name="retry">плохо пробуй ещё</string>
 </resources>

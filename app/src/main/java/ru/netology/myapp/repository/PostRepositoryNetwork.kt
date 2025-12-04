@@ -36,18 +36,19 @@ class PostRepositoryNetwork() : PostRepository {
         return gson.fromJson(textBody, type)
     }
 
-    override fun like(id: Long) {
-        val posts = get()
-        val post = posts.find { it.id == id } ?: return
+    override fun like(post: Post): Post {
 
-        val liked = post.likesByMe
+//        val posts = get()
+//        val post = posts.find { it.id == id } ?: return
 
-        val url = "${BASE_URL}api/posts/$id/likes"
+//        val liked = post.likesByMe
+
+        val url = "${BASE_URL}api/posts/${post.id}/likes"
 
         val builder = Request.Builder()
             .url(url)
 
-        val request = if (!liked) {
+        val request = if (!post.likesByMe) {
             builder
                 .post("".toRequestBody(jsonType))
                 .build()
@@ -67,6 +68,8 @@ class PostRepositoryNetwork() : PostRepository {
 
         val textBody = response.body.string()
         response.close()
+
+        return gson.fromJson(textBody, Post::class.java)
     }
 
     override fun repost(id: Long) {

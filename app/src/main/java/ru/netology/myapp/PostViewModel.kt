@@ -30,11 +30,16 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     val postCreated: LiveData<Unit>
         get() = _postCreated
 
-    fun like(id: Long) {
+    fun like(post: Post) {
         thread {
             try {
-                repository.like(id)
-                val posts = repository.get()
+                val updated = repository.like(post)
+                val current = _data.value ?: FeedModel()
+                val currentPost = current.post
+
+                val posts = currentPost.map {
+                    if (it.id == updated.id) updated else it
+                }
                 _data.postValue(
                     FeedModel(
                         post = posts,
@@ -53,9 +58,11 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 )
             }
 
+
         }
 
     }
+
 
     fun repost(id: Long) = repository.repost(id)
 

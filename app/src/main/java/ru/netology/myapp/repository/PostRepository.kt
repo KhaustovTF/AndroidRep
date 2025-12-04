@@ -5,7 +5,7 @@ import ru.netology.myapp.dto.Post
 
 interface PostRepository {
     fun get(): List<Post>
-    fun  like(id: Long)
+    fun  like(post: Post): Post
     fun repost(id: Long)
     fun removeById(id: Long)
     fun save(post: Post): Post
