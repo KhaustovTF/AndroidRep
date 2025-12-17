@@ -1,16 +1,33 @@
 package ru.netology.myapp.repository
 
-import androidx.lifecycle.LiveData
 import ru.netology.myapp.dto.Post
 
 interface PostRepository {
+
     fun get(): List<Post>
-    fun  like(post: Post): Post
+    fun like(post: Post): Post
     fun repost(id: Long)
     fun removeById(id: Long)
     fun save(post: Post): Post
     fun editCancel(post: Post)
 
-    //what to do with that ssh
+    fun getAllAsync(callback: GetaAllCallback)
 
+    fun likeAsync(post: Post, callback: LikeCallback)
+    fun saveAsync(post: Post, callback: SaveCallback)
+
+    interface GetaAllCallback {
+        fun onSuccess(posts: List<Post>)
+        fun onError(e: Exception)
+    }
+
+    interface LikeCallback {
+        fun onSuccess(post: Post)
+        fun onError(e: Exception)
+    }
+
+    interface SaveCallback {
+        fun onSuccess(post: Post)
+        fun onError(e: Exception)
+    }
 }
