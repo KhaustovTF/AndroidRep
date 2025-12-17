@@ -33,11 +33,13 @@ class NewPostFragment : Fragment() {
 
 
         binding.save.setOnClickListener {
-            viewModel.changeContent(binding.edit.text.toString())
-            viewModel.save()
-            AndroidUtils.hideKeyboard(requireView())
-        }
+            val content = binding.edit.text.toString()
 
+            viewModel.changeContent(content)
+            viewModel.save(content)
+            AndroidUtils.hideKeyboard(requireView())
+
+        }
         viewModel.postCreated.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
             viewModel.load()

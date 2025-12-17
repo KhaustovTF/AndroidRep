@@ -47,6 +47,8 @@ class PostRepositoryNetwork : PostRepository {
 
     override fun likeById(id: Long, likedByMe: Boolean, callback: PostRepository.PostCallback<Post>) {
         val url = "${BASE_URL}api/posts/$id/likes"
+        // если будет 404 — попробуй так:
+        // val url = "${BASE_URL}api/slow/posts/$id/likes"
 
         val builder = Request.Builder().url(url)
 
@@ -117,6 +119,4 @@ class PostRepositoryNetwork : PostRepository {
             }
         })
     }
-
-
 }

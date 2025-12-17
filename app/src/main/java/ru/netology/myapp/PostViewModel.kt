@@ -81,7 +81,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
-    fun save() {
+    fun save(toString: String) {
         val post = edited.value ?: return
 
         repository.save(post, object : PostRepository.PostCallback<Post> {
