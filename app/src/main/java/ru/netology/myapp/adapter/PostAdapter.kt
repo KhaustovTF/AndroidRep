@@ -9,12 +9,13 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ru.netology.myapp.R
 import ru.netology.myapp.SingleCountFix
 import ru.netology.myapp.databinding.CardPostBinding
 import ru.netology.myapp.dto.Post
-import androidx.core.net.toUri
 import ru.netology.myapp.adapter.PostViewHolder.PostDiffCallBack
+import ru.netology.myapp.repository.PostRepositoryNetwork
 
 typealias onLikeListener = (post: Post) -> Unit
 typealias onRepostListener = (post: Post) -> Unit
@@ -62,6 +63,14 @@ class PostViewHolder(
         authorNameText.text = post.author
         postsContent.text = post.content
         publishedTimeText.text = post.published
+
+        val avatarUrl = post.authorAvatar?.let { "${PostRepositoryNetwork.BASE_URL}avatars/$it" }
+        Glide.with(postsAvatar)
+            .load(avatarUrl)
+            .placeholder(R.drawable.ic_netology)
+            .error(R.drawable.ic_netology)
+            .circleCrop()
+            .into(postsAvatar)
 
 //            like button codee
         likeButton.apply {

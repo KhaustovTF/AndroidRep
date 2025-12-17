@@ -19,7 +19,7 @@ class PostRepositoryNetwork : PostRepository {
     private val listType = TypeToken.getParameterized(List::class.java, Post::class.java).type
 
     companion object {
-        private const val BASE_URL = "http://10.0.2.2:9999/"
+        const val BASE_URL = "http://10.0.2.2:9999/"
         private val jsonType = "application/json".toMediaType()
     }
 

@@ -8,6 +8,7 @@ data class Post(
     val published: String,
     val content: String,
     val video: String? = null,
+    val authorAvatar: String? = null,
 
 
     @SerializedName("likes")
