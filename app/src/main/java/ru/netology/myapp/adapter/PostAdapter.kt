@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.bumptech.glide.Glide
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.myapp.R
 import ru.netology.myapp.SingleCountFix
@@ -62,6 +63,22 @@ class PostViewHolder(
         authorNameText.text = post.author
         postsContent.text = post.content
         publishedTimeText.text = post.published
+
+
+        val avatarUrl = post.authorAvatar
+            ?.let { "http://10.0.2.2:9999/avatars/$it" }
+
+        android.util.Log.d("AVATAR", "authorAvatar=${post.authorAvatar}")
+        android.util.Log.d("AVATAR", "url=$avatarUrl")
+
+
+        Glide.with(postsAvatar)
+            .load(avatarUrl)
+            .timeout(10_000)
+            .placeholder(R.mipmap.ic_launcher)
+            .error(R.mipmap.ic_launcher)
+            .circleCrop()
+            .into(postsAvatar)
 
 //            like button codee
         likeButton.apply {

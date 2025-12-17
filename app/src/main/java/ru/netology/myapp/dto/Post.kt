@@ -9,6 +9,7 @@ data class Post(
     val content: String,
     val video: String? = null,
 
+    val authorAvatar: String? = null,
 
     @SerializedName("likes")
     var likesCount: Int = 0,
@@ -19,3 +20,4 @@ data class Post(
     @SerializedName("shares")
     var repostCount: Int = 0,
 )
+
