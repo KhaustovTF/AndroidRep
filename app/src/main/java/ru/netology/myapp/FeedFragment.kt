@@ -69,18 +69,18 @@ class FeedFragment : Fragment() {
         })
 
         binding.list.adapter = adapter
-        viewModel.data.observe(viewLifecycleOwner){ state ->
+
+        viewModel.data.observe(viewLifecycleOwner) { state ->
             adapter.submitList(state.post)
+
             binding.progress.isVisible = state.loading
             binding.empty.isVisible = state.empty
             binding.errorGroup.isVisible = state.error
-
         }
-        binding.retry.setOnClickListener{
+
+        binding.retry.setOnClickListener {
             viewModel.load()
         }
-
-
 
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment2_to_newPostFragment)

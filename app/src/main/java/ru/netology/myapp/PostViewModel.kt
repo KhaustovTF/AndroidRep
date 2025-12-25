@@ -23,7 +23,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: PostRepository = PostRepositoryNetwork()
 
     private val _data: MutableLiveData<FeedModel> = MutableLiveData(FeedModel())
-    val data: MutableLiveData<FeedModel>
+    val data: LiveData<FeedModel>
         get() = _data
 
     val edited = MutableLiveData(empty)
@@ -37,15 +37,26 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun load() {
-        _data.value = FeedModel(loading = true)
+        val current = _data.value ?: FeedModel()
+        // Важно: при новой загрузке сбрасываем error и включаем loading, но посты не теряем
+        _data.value = current.copy(loading = true, error = false)
 
         repository.getAllAsync(object : PostRepository.PostCallback<List<Post>> {
             override fun onSuccess(result: List<Post>) {
-                _data.postValue(FeedModel(post = result, empty = result.isEmpty()))
+                _data.postValue(
+                    FeedModel(
+                        post = result,
+                        loading = false,
+                        error = false,
+                        empty = result.isEmpty()
+                    )
+                )
             }
 
             override fun onError(error: Throwable) {
-                _data.postValue(FeedModel(error = true))
+                val prev = _data.value ?: FeedModel()
+                // Не затираем список: просто показываем ошибку
+                _data.postValue(prev.copy(loading = false, error = true))
             }
         })
     }
@@ -55,7 +66,13 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             override fun onSuccess(result: Post) {
                 val current = _data.value ?: FeedModel()
                 val newPosts = current.post.map { if (it.id == result.id) result else it }
-                _data.postValue(current.copy(post = newPosts, empty = newPosts.isEmpty(), error = false))
+                _data.postValue(
+                    current.copy(
+                        post = newPosts,
+                        empty = newPosts.isEmpty(),
+                        error = false
+                    )
+                )
             }
 
             override fun onError(error: Throwable) {
@@ -70,7 +87,13 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             override fun onSuccess(result: Unit) {
                 val current = _data.value ?: FeedModel()
                 val newPosts = current.post.filter { it.id != id }
-                _data.postValue(current.copy(post = newPosts, empty = newPosts.isEmpty(), error = false))
+                _data.postValue(
+                    current.copy(
+                        post = newPosts,
+                        empty = newPosts.isEmpty(),
+                        error = false
+                    )
+                )
             }
 
             override fun onError(error: Throwable) {
@@ -80,8 +103,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         })
     }
 
-
-    fun save(toString: String) {
+    fun save() {
         val post = edited.value ?: return
 
         repository.save(post, object : PostRepository.PostCallback<Post> {
@@ -114,6 +136,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun repost(id: Long) {
-
+        // по ДЗ не требуется
     }
 }

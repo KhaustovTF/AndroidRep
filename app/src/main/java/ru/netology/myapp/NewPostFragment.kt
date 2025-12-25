@@ -36,10 +36,11 @@ class NewPostFragment : Fragment() {
             val content = binding.edit.text.toString()
 
             viewModel.changeContent(content)
-            viewModel.save(content)
+            viewModel.save()
             AndroidUtils.hideKeyboard(requireView())
-
         }
+
+
         viewModel.postCreated.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
             viewModel.load()

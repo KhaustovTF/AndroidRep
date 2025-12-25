@@ -17,13 +17,18 @@ android {
 
     buildFeatures.viewBinding = true
 
+    buildFeatures{
+        buildConfig true
+    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             manifestPlaceholders["usesCleartextTraffic"] = false
+            buildConfigField "String", "BASE_URL", "\"https://10.0.2.2:9999/\""
         }
         debug{
+            buildConfigField "String", "BASE_URL", "\"http://10.0.2.2:9999/\""
             manifestPlaceholders["usesCleartextTraffic"] = true
         }
     }
@@ -55,6 +60,12 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.okhttp)
     implementation(libs.glide)
+    implementation libs.retrofit
+    implementation libs.converter.gson
+    implementation(libs.logging.interceptor)
+
+
+
 
 
 }
