@@ -5,9 +5,12 @@ import retrofit2.Callback
 import retrofit2.Response
 import ru.netology.myapp.api.PostApi
 import ru.netology.myapp.dto.Post
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PostRepositoryNetwork(
-    private val api: PostApi = PostApi.service
+@Singleton
+class PostRepositoryNetwork @Inject constructor(
+    private val api: PostApi
 ) : PostRepository {
 
     override fun getAllAsync(callback: PostRepository.PostCallback<List<Post>>) {

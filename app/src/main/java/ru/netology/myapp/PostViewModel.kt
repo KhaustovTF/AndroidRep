@@ -1,14 +1,14 @@
 package ru.netology.myapp
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.model.FeedModel
 import ru.netology.myapp.repository.PostRepository
-import ru.netology.myapp.repository.PostRepositoryNetwork
 import ru.netology.myapp.util.SingleLiveEvent
+import javax.inject.Inject
 
 private val empty = Post(
     id = 0,
@@ -18,9 +18,10 @@ private val empty = Post(
     likesByMe = false
 )
 
-class PostViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repository: PostRepository = PostRepositoryNetwork()
+@HiltViewModel
+class PostViewModel @Inject constructor(
+    private val repository: PostRepository
+) : ViewModel() {
 
     private val _data: MutableLiveData<FeedModel> = MutableLiveData(FeedModel())
     val data: LiveData<FeedModel>
@@ -38,7 +39,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun load() {
         val current = _data.value ?: FeedModel()
-        // Важно: при новой загрузке сбрасываем error и включаем loading, но посты не теряем
         _data.value = current.copy(loading = true, error = false)
 
         repository.getAllAsync(object : PostRepository.PostCallback<List<Post>> {
@@ -55,7 +55,6 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
             override fun onError(error: Throwable) {
                 val prev = _data.value ?: FeedModel()
-                // Не затираем список: просто показываем ошибку
                 _data.postValue(prev.copy(loading = false, error = true))
             }
         })
@@ -136,6 +135,5 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun repost(id: Long) {
-        // по ДЗ не требуется
     }
 }

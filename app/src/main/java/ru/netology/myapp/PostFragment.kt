@@ -7,17 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import ru.netology.myapp.FeedFragment.Companion.textArgs
 import ru.netology.myapp.adapter.OnInteractorListener
 import ru.netology.myapp.adapter.PostViewHolder
 import ru.netology.myapp.databinding.FragmentSinglePostBinding
 import ru.netology.myapp.dto.Post
 
+@AndroidEntryPoint
 class PostFragment : Fragment() {
 
-    private val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
+    private val viewModel: PostViewModel by activityViewModels()
     private val postId: Long by lazy { requireArguments().getLong("postId") }
 
     override fun onCreateView(
@@ -61,8 +63,6 @@ class PostFragment : Fragment() {
                     startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
                 }
             }
-
-            // onOpen не нужен — оставляем дефолтный пустой
         })
 
         viewModel.data.observe(viewLifecycleOwner) { state ->

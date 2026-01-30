@@ -11,7 +11,7 @@ import ru.netology.myapp.BuildConfig
 import ru.netology.myapp.dto.Post
 import java.util.concurrent.TimeUnit
 
-private const val BASE_URL = BuildConfig.BASE_URL // "http://10.0.2.2:9999/" и обязательно со / на конце
+private const val BASE_URL = BuildConfig.BASE_URL
 
 
 private val client = OkHttpClient.Builder()

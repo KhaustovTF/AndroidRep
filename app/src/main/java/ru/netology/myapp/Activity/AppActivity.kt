@@ -5,14 +5,26 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.firebase.messaging.FirebaseMessaging
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import ru.netology.myapp.FeedFragment.Companion.textArgs
 import ru.netology.myapp.R
 import ru.netology.myapp.databinding.ActivityAppBinding
 
+@AndroidEntryPoint
 class AppActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var firebaseMessaging: FirebaseMessaging
+
+    @Inject
+    lateinit var googleApiAvailability: GoogleApiAvailability
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityAppBinding .inflate(layoutInflater)
+        val binding = ActivityAppBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         intent?.let {
@@ -30,10 +42,10 @@ class AppActivity : AppCompatActivity() {
                 return@let
             }
 
-            findNavController(R.id.nav_host_fragment).navigate(R.id.action_feedFragment2_to_newPostFragment,
-                Bundle().apply {
-                    textArgs = text
-                })
+            findNavController(R.id.nav_host_fragment).navigate(
+                R.id.action_feedFragment2_to_newPostFragment,
+                Bundle().apply { textArgs = text }
+            )
         }
     }
 }
