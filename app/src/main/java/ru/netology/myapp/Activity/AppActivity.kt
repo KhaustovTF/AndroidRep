@@ -4,9 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.firebase.messaging.FirebaseMessaging
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import ru.netology.myapp.FeedFragment.Companion.textArgs
@@ -15,9 +14,6 @@ import ru.netology.myapp.databinding.ActivityAppBinding
 
 @AndroidEntryPoint
 class AppActivity : AppCompatActivity() {
-
-    @Inject
-    lateinit var firebaseMessaging: FirebaseMessaging
 
     @Inject
     lateinit var googleApiAvailability: GoogleApiAvailability
