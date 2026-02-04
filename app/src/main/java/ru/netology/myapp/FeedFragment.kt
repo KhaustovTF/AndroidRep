@@ -9,10 +9,17 @@ import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import ru.netology.myapp.adapter.OnInteractorListener
 import ru.netology.myapp.adapter.PostAdapter
+import ru.netology.myapp.auth.AuthViewModel
 import ru.netology.myapp.databinding.FragmentFeedBinding
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.util.StringArg
@@ -21,6 +28,7 @@ import ru.netology.myapp.util.StringArg
 class FeedFragment : Fragment() {
 
     private val viewModel: PostViewModel by activityViewModels()
+    private val authViewModel: AuthViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,19 +81,49 @@ class FeedFragment : Fragment() {
 
         binding.list.adapter = adapter
 
-        viewModel.data.observe(viewLifecycleOwner) { state ->
-            adapter.submitList(state.post)
-            binding.progress.isVisible = state.loading
-            binding.empty.isVisible = state.empty
-            binding.errorGroup.isVisible = state.error
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.data.collectLatest { pagingData ->
+                    adapter.submitData(pagingData)
+                }
+            }
+        }
+
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                adapter.loadStateFlow.collectLatest { state ->
+                    val refresh = state.refresh
+                    binding.progress.isVisible = refresh is LoadState.Loading
+                    binding.errorGroup.isVisible = refresh is LoadState.Error
+                    binding.empty.isVisible =
+                        refresh is LoadState.NotLoading && adapter.itemCount == 0
+                }
+            }
         }
 
         binding.retry.setOnClickListener {
-            viewModel.load()
+            adapter.retry()
         }
 
         binding.fab.setOnClickListener {
             findNavController().navigate(R.id.action_feedFragment2_to_newPostFragment)
+        }
+
+        viewModel.refresh.observe(viewLifecycleOwner) {
+            adapter.refresh()
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                authViewModel.authorized.collectLatest {
+                    adapter.refresh()
+                }
+            }
+        }
+
+        binding.empty.setOnClickListener {
+            authViewModel.toggle()
         }
 
         return binding.root
@@ -95,4 +133,3 @@ class FeedFragment : Fragment() {
         var Bundle.textArgs by StringArg
     }
 }
-//huh

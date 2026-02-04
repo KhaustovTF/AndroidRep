@@ -2,7 +2,7 @@ package ru.netology.myapp.api
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
@@ -11,8 +11,7 @@ import ru.netology.myapp.BuildConfig
 import ru.netology.myapp.dto.Post
 import java.util.concurrent.TimeUnit
 
-private const val BASE_URL = BuildConfig.BASE_URL
-
+private val BASE_URL = BuildConfig.BASE_URL
 
 private val client = OkHttpClient.Builder()
     .connectTimeout(30, TimeUnit.SECONDS)
@@ -33,21 +32,39 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 interface PostApi {
+
     @GET("api/slow/posts")
-    fun getAll(): Call<List<Post>>
+    suspend fun getAll(): Response<List<Post>>
+
+    @GET("posts/{id}/newer")
+    suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>
+
+    @GET("posts/{id}/after")
+    suspend fun getAfter(
+        @Path("id") id: Long,
+        @Query("count") count: Int
+    ): Response<List<Post>>
+
+    @GET("posts/latest")
+    suspend fun getLatest(@Query("count") count: Int): Response<List<Post>>
+
+    @GET("posts/{id}/before")
+    suspend fun getBefore(
+        @Path("id") id: Long,
+        @Query("count") count: Int
+    ): Response<List<Post>>
 
     @POST("api/slow/posts")
-    fun save(@Body post: Post): Call<Post>
+    suspend fun save(@Body post: Post): Response<Post>
 
     @DELETE("api/slow/posts/{id}")
-    fun deleteById(@Path("id") id: Long): Call<Unit>
+    suspend fun deleteById(@Path("id") id: Long): Response<Unit>
 
     @POST("api/posts/{id}/likes")
-    fun likeById(@Path("id") id: Long): Call<Post>
+    suspend fun likeById(@Path("id") id: Long): Response<Post>
 
     @DELETE("api/posts/{id}/likes")
-    fun unlikeById(@Path("id") id: Long): Call<Post>
-
+    suspend fun unlikeById(@Path("id") id: Long): Response<Post>
 
     companion object {
         val service: PostApi by lazy { retrofit.create() }

@@ -1,25 +1,17 @@
 package ru.netology.myapp.adapter
 
-import android.content.Intent
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
-import com.bumptech.glide.Glide
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ru.netology.myapp.R
 import ru.netology.myapp.SingleCountFix
 import ru.netology.myapp.databinding.CardPostBinding
 import ru.netology.myapp.dto.Post
-import androidx.core.net.toUri
-import ru.netology.myapp.adapter.PostViewHolder.PostDiffCallBack
-
-typealias onLikeListener = (post: Post) -> Unit
-typealias onRepostListener = (post: Post) -> Unit
-typealias onRemoveListener = (post: Post) -> Unit
 
 interface OnInteractorListener {
     fun onLike(post: Post)
@@ -32,45 +24,30 @@ interface OnInteractorListener {
 
 class PostAdapter(
     private val onInteractorListener: OnInteractorListener,
-) :
-    ListAdapter<Post, PostViewHolder>(PostDiffCallBack) {
+) : PagingDataAdapter<Post, PostViewHolder>(PostDiffCallBack) {
 
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): PostViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PostViewHolder(binding, onInteractorListener)
     }
 
-    override fun onBindViewHolder(
-        holder: PostViewHolder,
-        position: Int
-    ) {
-        val post = getItem(position)
+    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
+        val post = getItem(position) ?: return
         holder.bind(post)
     }
-
-
 }
 
 class PostViewHolder(
     private val binding: CardPostBinding,
     private val onInteractorListener: OnInteractorListener
 ) : RecyclerView.ViewHolder(binding.root) {
+
     fun bind(post: Post) = with(binding) {
         authorNameText.text = post.author
         postsContent.text = post.content
         publishedTimeText.text = post.published
 
-
-        val avatarUrl = post.authorAvatar
-            ?.let { "http://10.0.2.2:9999/avatars/$it" }
-
-        android.util.Log.d("AVATAR", "authorAvatar=${post.authorAvatar}")
-        android.util.Log.d("AVATAR", "url=$avatarUrl")
-
+        val avatarUrl = post.authorAvatar?.let { "http://10.0.2.2:9999/avatars/$it" }
 
         Glide.with(postsAvatar)
             .load(avatarUrl)
@@ -80,26 +57,21 @@ class PostViewHolder(
             .circleCrop()
             .into(postsAvatar)
 
-//            like button codee
         likeButton.apply {
             isChecked = post.likesByMe
-            text = post.likesCount.toString()
             text = SingleCountFix.counteFixer(post.likesCount)
         }
+
         repostButton.apply {
-            text = post.repostCount.toString()
             text = SingleCountFix.counteFixer(post.repostCount)
         }
-
 
         likeButton.setOnClickListener {
             onInteractorListener.onLike(post)
         }
 
         repostButton.setOnClickListener {
-//                post.repostCount++
             onInteractorListener.onRepost(post)
-//                repostButtonCount.text = countefixer(post.repostCount)
         }
 
         moreVertButton.setOnClickListener {
@@ -111,22 +83,14 @@ class PostViewHolder(
                             onInteractorListener.onRemove(post)
                             true
                         }
-
                         R.id.edit_post -> {
                             onInteractorListener.onEdit(post)
                             true
                         }
-
                         else -> false
                     }
                 }
-
-
             }.show()
-        }
-
-        binding.root.setOnClickListener {
-            onInteractorListener.onOpen(post)
         }
 
         if (post.video.isNullOrBlank()) {
@@ -141,22 +105,14 @@ class PostViewHolder(
             videoPlace.setOnClickListener(clickListener)
             playButton.setOnClickListener(clickListener)
         }
+
         binding.root.setOnClickListener {
             onInteractorListener.onOpen(post)
-        }
-        binding.root.isClickable = true
-        binding.root.isFocusable = true
-
-    }
-
-    object PostDiffCallBack : DiffUtil.ItemCallback<Post>() {
-        override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
-            return oldItem == newItem
         }
     }
 }
 
+object PostDiffCallBack : DiffUtil.ItemCallback<Post>() {
+    override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem.id == newItem.id
+    override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean = oldItem == newItem
+}

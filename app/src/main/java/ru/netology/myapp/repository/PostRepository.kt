@@ -1,19 +1,17 @@
 package ru.netology.myapp.repository
 
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
 import ru.netology.myapp.dto.Post
 
 interface PostRepository {
+    val data: Flow<PagingData<Post>>
 
-    fun getAllAsync(callback: PostCallback<List<Post>>)
+    suspend fun getAll(): List<Post>
 
-    fun likeById(id: Long, likedByMe: Boolean, callback: PostCallback<Post>)
+    suspend fun likeById(id: Long, likedByMe: Boolean): Post
 
-    fun removeById(id: Long, callback: PostCallback<Unit>)
+    suspend fun removeById(id: Long)
 
-    fun save(post: Post, callback: PostCallback<Post>)
-
-    interface PostCallback<T> {
-        fun onSuccess(result: T)
-        fun onError(error: Throwable)
-    }
+    suspend fun save(post: Post): Post
 }

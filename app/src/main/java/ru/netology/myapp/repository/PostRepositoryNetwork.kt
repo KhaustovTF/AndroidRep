@@ -1,10 +1,11 @@
 package ru.netology.myapp.repository
 
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import retrofit2.HttpException
 import ru.netology.myapp.api.PostApi
 import ru.netology.myapp.dto.Post
+import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,98 +14,31 @@ class PostRepositoryNetwork @Inject constructor(
     private val api: PostApi
 ) : PostRepository {
 
-    override fun getAllAsync(callback: PostRepository.PostCallback<List<Post>>) {
-        api.getAll().enqueue(object : Callback<List<Post>> {
-            override fun onResponse(call: Call<List<Post>>, response: Response<List<Post>>) {
-                if (!response.isSuccessful) {
-                    callback.onError(RuntimeException(errorText(response)))
-                    return
-                }
-                callback.onSuccess(response.body().orEmpty())
-            }
+    override val data = Pager(
+        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+        pagingSourceFactory = { PostPagingSource(api) }
+    ).flow
 
-            override fun onFailure(call: Call<List<Post>>, t: Throwable) {
-                callback.onError(t)
-            }
-        })
+    override suspend fun getAll(): List<Post> {
+        val response = api.getAll()
+        if (!response.isSuccessful) throw HttpException(response)
+        return response.body().orEmpty()
     }
 
-    override fun likeById(
-        id: Long,
-        likedByMe: Boolean,
-        callback: PostRepository.PostCallback<Post>
-    ) {
-        val call = if (likedByMe) api.unlikeById(id) else api.likeById(id)
-
-        call.enqueue(object : Callback<Post> {
-            override fun onResponse(call: Call<Post>, response: Response<Post>) {
-                if (!response.isSuccessful) {
-                    callback.onError(RuntimeException(errorText(response)))
-                    return
-                }
-
-                val body = response.body()
-                if (body == null) {
-                    callback.onError(RuntimeException("Response body is null"))
-                    return
-                }
-
-                callback.onSuccess(body)
-            }
-
-            override fun onFailure(call: Call<Post>, t: Throwable) {
-                callback.onError(t)
-            }
-        })
+    override suspend fun likeById(id: Long, likedByMe: Boolean): Post {
+        val response = if (likedByMe) api.unlikeById(id) else api.likeById(id)
+        if (!response.isSuccessful) throw HttpException(response)
+        return response.body() ?: throw IOException("Response body is null")
     }
 
-    override fun save(post: Post, callback: PostRepository.PostCallback<Post>) {
-        api.save(post).enqueue(object : Callback<Post> {
-            override fun onResponse(call: Call<Post>, response: Response<Post>) {
-                if (!response.isSuccessful) {
-                    callback.onError(RuntimeException(errorText(response)))
-                    return
-                }
-
-                val body = response.body()
-                if (body == null) {
-                    callback.onError(RuntimeException("Response body is null"))
-                    return
-                }
-
-                callback.onSuccess(body)
-            }
-
-            override fun onFailure(call: Call<Post>, t: Throwable) {
-                callback.onError(t)
-            }
-        })
+    override suspend fun removeById(id: Long) {
+        val response = api.deleteById(id)
+        if (!response.isSuccessful) throw HttpException(response)
     }
 
-    override fun removeById(id: Long, callback: PostRepository.PostCallback<Unit>) {
-        api.deleteById(id).enqueue(object : Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if (!response.isSuccessful) {
-                    callback.onError(RuntimeException(errorText(response)))
-                    return
-                }
-                callback.onSuccess(Unit)
-            }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                callback.onError(t)
-            }
-        })
-    }
-
-    private fun <T> errorText(response: Response<T>): String {
-        val body = try {
-            response.errorBody()?.string()
-        } catch (e: Exception) {
-            null
-        }
-
-        val base = "HTTP ${response.code()} ${response.message()}"
-        return if (body.isNullOrBlank()) base else "$base: $body"
+    override suspend fun save(post: Post): Post {
+        val response = api.save(post)
+        if (!response.isSuccessful) throw HttpException(response)
+        return response.body() ?: throw IOException("Response body is null")
     }
 }

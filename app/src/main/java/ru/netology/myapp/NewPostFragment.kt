@@ -4,15 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.core.view.setPadding
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import dagger.hilt.android.AndroidEntryPoint
-import ru.netology.myapp.FeedFragment.Companion.textArgs
-import ru.netology.myapp.databinding.FragmentNewPostBinding
-import ru.netology.myapp.util.AndroidUtils
 
-@AndroidEntryPoint
 class NewPostFragment : Fragment() {
 
     private val viewModel: PostViewModel by activityViewModels()
@@ -22,25 +21,40 @@ class NewPostFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val context = requireContext()
 
-        val binding = FragmentNewPostBinding.inflate(inflater, container, false)
-
-        arguments?.textArgs?.let { text ->
-            binding.edit.setText(text)
+        val edit = EditText(context).apply {
+            hint = "Введите текст поста"
+            setText(arguments?.getString(TEXT_ARG).orEmpty())
         }
 
-        binding.save.setOnClickListener {
-            val content = binding.edit.text.toString()
-            viewModel.changeContent(content)
-            viewModel.save()
-            AndroidUtils.hideKeyboard(requireView())
+        val ok = Button(context).apply {
+            text = "OK"
+            setOnClickListener {
+                viewModel.changeContent(edit.text.toString())
+                viewModel.save()
+            }
         }
 
         viewModel.postCreated.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
-            viewModel.load()
         }
 
-        return binding.root
+        return LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(16)
+            addView(edit, LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ))
+            addView(ok, LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            ))
+        }
+    }
+
+    companion object {
+        private const val TEXT_ARG = "textArgs"
     }
 }
