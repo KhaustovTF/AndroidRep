@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import ru.netology.myapp.db.PostColumns
 import ru.netology.myapp.dto.Post
 
-class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
+class LegacyPostDaoImpl(private val db: SQLiteDatabase) {
 
     companion object {
         val DDL = """
@@ -23,7 +23,7 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
         """.trimIndent()
     }
 
-    override fun getAll(): List<Post> {
+    fun getAll(): List<Post> {
         val result = mutableListOf<Post>()
         db.query(
             PostColumns.TABLE,
@@ -38,7 +38,7 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
         return result
     }
 
-    override fun save(post: Post): Post {
+    fun save(post: Post): Post {
         val values = ContentValues().apply {
             if (post.id != 0L) put(PostColumns.COLUMN_ID, post.id)
             put(PostColumns.COLUMN_AUTHOR, if (post.id == 0L) "Me" else post.author)
@@ -49,7 +49,6 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
             put(PostColumns.COLUMN_REPOST_COUNT, post.repostCount)
             put(PostColumns.COLUMN_VIDEO, post.video)
         }
-
 
         val id = db.replace(PostColumns.TABLE, null, values)
 
@@ -65,14 +64,14 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
         }
     }
 
-    override fun likeById(id: Long) {
+    fun likeById(id: Long) {
         db.execSQL(
             """
             UPDATE ${PostColumns.TABLE}
-            SET ${PostColumns.COLUMN_LIKES_COUNT} = ${PostColumns.COLUMN_LIKES_COUNT} + 
+            SET ${PostColumns.COLUMN_LIKES_COUNT} = ${PostColumns.COLUMN_LIKES_COUNT} +
                 CASE WHEN ${PostColumns.COLUMN_LIKES_BY_ME} THEN -1 ELSE 1 END,
-                ${PostColumns.COLUMN_LIKES_BY_ME} = CASE 
-                    WHEN ${PostColumns.COLUMN_LIKES_BY_ME} THEN 0 ELSE 1 
+                ${PostColumns.COLUMN_LIKES_BY_ME} = CASE
+                    WHEN ${PostColumns.COLUMN_LIKES_BY_ME} THEN 0 ELSE 1
                 END
             WHERE ${PostColumns.COLUMN_ID} = ?;
             """.trimIndent(),
@@ -80,7 +79,7 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
         )
     }
 
-    override fun repostById(id: Long) {
+    fun repostById(id: Long) {
         db.execSQL(
             """
             UPDATE ${PostColumns.TABLE}
@@ -91,14 +90,13 @@ class PostDaoImpl(private val db: SQLiteDatabase) : PostDao {
         )
     }
 
-    override fun removeById(id: Long) {
+    fun removeById(id: Long) {
         db.delete(
             PostColumns.TABLE,
             "${PostColumns.COLUMN_ID} = ?",
             arrayOf(id.toString())
         )
     }
-
 
     private fun Cursor.mapToPost(): Post = Post(
         id = getLong(getColumnIndexOrThrow(PostColumns.COLUMN_ID)),

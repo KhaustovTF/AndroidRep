@@ -2,9 +2,21 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
-apply plugin: "dagger.hilt.android.plugin"
+configurations.configureEach {
+    resolutionStrategy {
+        force "org.jetbrains.kotlin:kotlin-stdlib:2.1.21"
+        force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.21"
+        force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.21"
+        eachDependency {
+            if (requested.group == "org.jetbrains.kotlin") {
+                useVersion("2.1.21")
+            }
+        }
+    }
+}
 
 android {
     namespace 'ru.netology.myapp'
@@ -45,7 +57,6 @@ android {
         jvmTarget = '11'
     }
 
-
     packaging {
         resources {
             excludes += [
@@ -60,6 +71,11 @@ android {
         }
     }
 
+    kapt {
+        correctErrorTypes = true
+        useBuildCache = false
+        includeCompileClasspath = false
+    }
 }
 
 dependencies {
@@ -84,8 +100,7 @@ dependencies {
     implementation libs.glide
 
     implementation "com.google.dagger:hilt-android:2.57.1"
-    implementation libs.firebase.appdistribution.gradle
-    kapt "com.google.dagger:hilt-compiler:2.57.1"
+    kapt "com.google.dagger:hilt-android-compiler:2.57.1"
 
     implementation "com.google.android.gms:play-services-base:18.5.0"
 
@@ -94,8 +109,8 @@ dependencies {
     androidTestImplementation libs.androidx.espresso.core
 
     implementation "androidx.paging:paging-runtime-ktx:3.3.6"
-}
 
-kapt {
-    correctErrorTypes = true
+    implementation "androidx.room:room-runtime:2.8.4"
+    kapt "androidx.room:room-compiler:2.8.4"
+    implementation "androidx.room:room-ktx:2.8.4"
 }
