@@ -35,7 +35,6 @@ class FeedFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         val binding = FragmentFeedBinding.inflate(inflater, container, false)
 
         val adapter = PostAdapter(object : OnInteractorListener {
@@ -81,6 +80,10 @@ class FeedFragment : Fragment() {
 
         binding.list.adapter = adapter
 
+        binding.swipeRefresh.setOnRefreshListener {
+            adapter.refresh()
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.data.collectLatest { pagingData ->
@@ -89,15 +92,14 @@ class FeedFragment : Fragment() {
             }
         }
 
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 adapter.loadStateFlow.collectLatest { state ->
                     val refresh = state.refresh
                     binding.progress.isVisible = refresh is LoadState.Loading
+                    binding.swipeRefresh.isRefreshing = refresh is LoadState.Loading
                     binding.errorGroup.isVisible = refresh is LoadState.Error
-                    binding.empty.isVisible =
-                        refresh is LoadState.NotLoading && adapter.itemCount == 0
+                    binding.empty.isVisible = refresh is LoadState.NotLoading && adapter.itemCount == 0
                 }
             }
         }

@@ -36,23 +36,23 @@ interface PostApi {
     @GET("api/slow/posts")
     suspend fun getAll(): Response<List<Post>>
 
-    @GET("posts/{id}/newer")
-    suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>
+    @GET("api/slow/posts/latest")
+    suspend fun getLatest(@Query("count") count: Int): Response<List<Post>>
 
-    @GET("posts/{id}/after")
+    @GET("api/slow/posts/{id}/after")
     suspend fun getAfter(
         @Path("id") id: Long,
         @Query("count") count: Int
     ): Response<List<Post>>
 
-    @GET("posts/latest")
-    suspend fun getLatest(@Query("count") count: Int): Response<List<Post>>
-
-    @GET("posts/{id}/before")
+    @GET("api/slow/posts/{id}/before")
     suspend fun getBefore(
         @Path("id") id: Long,
         @Query("count") count: Int
     ): Response<List<Post>>
+
+    @GET("api/slow/posts/{id}/newer")
+    suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>
 
     @POST("api/slow/posts")
     suspend fun save(@Body post: Post): Response<Post>

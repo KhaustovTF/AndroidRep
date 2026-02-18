@@ -30,28 +30,17 @@ class PostRemoteMediator(
     ): MediatorResult {
         return try {
             val pageSize = state.config.pageSize
-            
-            val currentAfter = keyDao.key(KeyType.AFTER) ?: postDao.maxId()
-            val currentBefore = keyDao.key(KeyType.BEFORE) ?: postDao.minId()
+
+            val after = keyDao.key(KeyType.AFTER) ?: postDao.maxId()
+            val before = keyDao.key(KeyType.BEFORE) ?: postDao.minId()
 
             val response = when (loadType) {
-                LoadType.PREPEND -> {
-
-                    return MediatorResult.Success(endOfPaginationReached = true)
-                }
-
+                LoadType.PREPEND -> return MediatorResult.Success(endOfPaginationReached = true)
                 LoadType.REFRESH -> {
-
-                    if (currentAfter == null) {
-                        api.getLatest(pageSize)
-                    } else {
-                        api.getAfter(currentAfter, pageSize)
-                    }
+                    if (after == null) api.getLatest(pageSize) else api.getAfter(after, pageSize)
                 }
-
                 LoadType.APPEND -> {
-
-                    val key = currentBefore ?: return MediatorResult.Success(endOfPaginationReached = true)
+                    val key = before ?: return MediatorResult.Success(endOfPaginationReached = true)
                     api.getBefore(key, pageSize)
                 }
             }
@@ -69,27 +58,21 @@ class PostRemoteMediator(
 
                     when (loadType) {
                         LoadType.REFRESH -> {
-
                             keyDao.insert(PostRemoteKeyEntity(type = KeyType.AFTER, key = firstId))
-
-
-                            if (currentBefore == null) {
+                            if (before == null) {
                                 keyDao.insert(PostRemoteKeyEntity(type = KeyType.BEFORE, key = lastId))
                             }
                         }
 
                         LoadType.APPEND -> {
-
                             keyDao.insert(PostRemoteKeyEntity(type = KeyType.BEFORE, key = lastId))
-
-                            if (currentAfter == null) {
+                            if (after == null) {
                                 keyDao.insert(PostRemoteKeyEntity(type = KeyType.AFTER, key = firstId))
                             }
                         }
 
                         LoadType.PREPEND -> Unit
                     }
-                } else {
                 }
             }
 
