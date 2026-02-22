@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.netology.myapp.adapter.OnInteractorListener
 import ru.netology.myapp.adapter.PostAdapter
-import ru.netology.myapp.auth.AuthViewModel
+import ru.netology.myapp.adapter.PostsLoadStateAdapter
 import ru.netology.myapp.databinding.FragmentFeedBinding
 import ru.netology.myapp.dto.Post
 import ru.netology.myapp.util.StringArg
@@ -28,7 +28,6 @@ import ru.netology.myapp.util.StringArg
 class FeedFragment : Fragment() {
 
     private val viewModel: PostViewModel by activityViewModels()
-    private val authViewModel: AuthViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,7 +77,10 @@ class FeedFragment : Fragment() {
             }
         })
 
-        binding.list.adapter = adapter
+        binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
+            header = PostsLoadStateAdapter { adapter.retry() },
+            footer = PostsLoadStateAdapter { adapter.retry() }
+        )
 
         binding.swipeRefresh.setOnRefreshListener {
             adapter.refresh()
@@ -96,36 +98,10 @@ class FeedFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 adapter.loadStateFlow.collectLatest { state ->
                     val refresh = state.refresh
-                    binding.progress.isVisible = refresh is LoadState.Loading
                     binding.swipeRefresh.isRefreshing = refresh is LoadState.Loading
-                    binding.errorGroup.isVisible = refresh is LoadState.Error
-                    binding.empty.isVisible = refresh is LoadState.NotLoading && adapter.itemCount == 0
+                    binding.progress.isVisible = refresh is LoadState.Loading && adapter.itemCount == 0
                 }
             }
-        }
-
-        binding.retry.setOnClickListener {
-            adapter.retry()
-        }
-
-        binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_feedFragment2_to_newPostFragment)
-        }
-
-        viewModel.refresh.observe(viewLifecycleOwner) {
-            adapter.refresh()
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                authViewModel.authorized.collectLatest {
-                    adapter.refresh()
-                }
-            }
-        }
-
-        binding.empty.setOnClickListener {
-            authViewModel.toggle()
         }
 
         return binding.root
